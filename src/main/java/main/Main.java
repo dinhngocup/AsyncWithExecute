@@ -1,10 +1,10 @@
-package main;
+package main.java.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import task.HttpMethod;
-import task.HttpTask;
-import task.ITask;
+import main.java.task.HttpMethod;
+import main.java.task.HttpTask;
+import main.java.task.ITask;
 
 public class Main {
 

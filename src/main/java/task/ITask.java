@@ -1,4 +1,4 @@
-package task;
+package main.java.task;
 
 import java.util.HashMap;
 
@@ -15,7 +15,7 @@ public abstract class ITask implements Runnable{
 
   @Override
   public void run() {
-    System.out.println("Handling task with thread id = " + Thread.currentThread().getId());
+    System.out.println("Handling main.java.task with thread id = " + Thread.currentThread().getId());
     handlingTask();
     System.out.println("Successfully.");
   }

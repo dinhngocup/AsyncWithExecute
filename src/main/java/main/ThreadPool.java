@@ -1,11 +1,11 @@
-package main;
+package main.java.main;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import task.ITask;
+import main.java.task.ITask;
 
 public class ThreadPool {
   private final int CORE_POOL_SIZE = 2;
