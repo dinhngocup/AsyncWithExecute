@@ -47,13 +47,11 @@ public class HttpTask extends ITask {
     }
   }
 
-  public HttpRequestBase prepareHttpRequest() {
-    switch (method) {
-      case GET:
-        return prepareGetHttpRequest();
-      default:
-        return null;
+  private HttpRequestBase prepareHttpRequest() {
+    if (method == HttpMethod.GET) {
+      return prepareGetHttpRequest();
     }
+    return null;
   }
 
   public HttpRequestBase prepareGetHttpRequest() {
