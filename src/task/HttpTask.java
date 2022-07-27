@@ -1,40 +1,50 @@
-package main;
+package task;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-public class Api implements Callable {
-
-  int id;
+public class HttpTask extends ITask {
   String url;
+  String requestBody;
+  String header;
+  HttpMethod method;
 
-  public Api(int id, String url) {
-    this.id = id;
+  public HttpTask(int id, String url, String requestBody, String header, HttpMethod method) {
+    super(id);
     this.url = url;
+    this.requestBody = requestBody;
+    this.header = header;
+    this.method = method;
+  }
+  public HttpTask(int id, String url, HttpMethod method) {
+    super(id);
+    this.url = url;
+    this.method = method;
   }
 
-  // Call API GET to get post data.
-  public ConcurrentHashMap<Integer, String> getAllData() {
+  @Override
+  public ConcurrentHashMap<Integer, String> handlingTask() {
+    HttpRequestBase request = prepareHttpRequest();
     CloseableHttpClient httpClient = HttpClients
         .createDefault();
-    HttpGet request = new HttpGet(this.url);
     String result = "";
     try {
       CloseableHttpResponse res = httpClient.execute(request);
       // Read the response body.
       HttpEntity entity = res.getEntity();
       result = EntityUtils.toString(entity);
+
       ConcurrentHashMap<Integer, String> resultMap = new java.util.concurrent.ConcurrentHashMap<>();
       resultMap.put(this.id, result);
       System.out.println("Calling api: " + url + " successfully!");
-
       return resultMap;
+
     } catch (java.io.IOException e) {
       e.printStackTrace();
     } finally {
@@ -43,12 +53,16 @@ public class Api implements Callable {
     return null;
   }
 
-  @Override
-  public ConcurrentHashMap<Integer, String> call() throws Exception {
-    long threadId = Thread.currentThread().getId();
-    System.out.println("Calling api: " + url + " - thread id = " + threadId);
-    return getAllData();
+  public HttpRequestBase prepareHttpRequest() {
+    switch (method) {
+      case GET:
+        return prepareGetHttpRequest();
+      default:
+        return null;
+    }
+  }
+
+  public HttpRequestBase prepareGetHttpRequest() {
+    return new HttpGet(this.url);
   }
 }
-
-
